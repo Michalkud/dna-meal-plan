@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNA · Protizánětlivý OMAD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e6;
+  --bg-soft: #ece5d4;
+  --surface: #ffffff;
+  --surface-2: #fbf8f1;
+  --ink: #1a1815;
+  --ink-soft: #4a463e;
+  --muted: #7a756a;
+  --line: #e2dccc;
+  --line-soft: #ede8d9;
+  --accent: #1f4d3a;
+  --accent-soft: #d7e3d8;
+  --sage: #8aa888;
+  --terra: #c66a3e;
+  --terra-soft: #f4dccc;
+  --warn: #a73e2e;
+  --gold: #b58a3d;
+  --shadow-sm: 0 1px 2px rgba(26, 24, 21, 0.04), 0 1px 3px rgba(26, 24, 21, 0.06);
+  --shadow-md: 0 4px 12px rgba(26, 24, 21, 0.06), 0 2px 4px rgba(26, 24, 21, 0.04);
+  --shadow-lg: 0 12px 32px rgba(26, 24, 21, 0.08), 0 4px 8px rgba(26, 24, 21, 0.04);
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 50% -100px, rgba(138, 168, 136, 0.18), transparent 70%),
+    radial-gradient(900px 500px at 100% 30%, rgba(198, 106, 62, 0.06), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 120px; }
+
+h1, h2, h3 {
+  font-family: "Fraunces", Georgia, "Iowan Old Style", serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variation-settings: "opsz" 60;
+}
+h1 { font-size: clamp(40px, 6vw, 60px); line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.035em; }
+h2 {
+  font-size: clamp(26px, 3vw, 34px);
+  margin: 88px 0 24px;
+  line-height: 1.15;
+  display: flex; align-items: baseline; gap: 14px;
+}
+h2::before {
+  content: attr(data-num);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  align-self: center;
+}
+h3 { font-size: 19px; margin: 28px 0 10px; font-weight: 600; }
+p { margin: 0 0 14px; }
+em { color: var(--muted); font-style: italic; }
+strong { color: var(--accent); font-weight: 600; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* Hero */
+.hero {
+  position: relative;
+  padding: 24px 0 56px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.hero .kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 6px 14px; border-radius: 999px;
+  margin-bottom: 24px;
+}
+.hero .kicker::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 60%, var(--sage) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero .sub {
+  font-size: 19px;
+  color: var(--ink-soft);
+  max-width: 620px;
+  line-height: 1.55;
+  margin: 0 0 28px;
+}
+.hero .meta {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.hero .meta .chip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* Generic card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Rules */
+.rules { display: grid; gap: 14px; }
+.rule {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  align-items: start;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+.rule:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.rule .num {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.rule .body b { display: block; font-size: 16px; color: var(--ink); margin-bottom: 6px; font-weight: 600; }
+.rule .body span { color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; }
+
+/* Template (daily) */
+.template {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin: 24px 0;
+  box-shadow: var(--shadow-md);
+}
+.template h3 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+.template .row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 22px;
+  padding: 18px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.template .row:last-child { border: none; padding-bottom: 4px; }
+.template .when {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+.template .what { color: var(--ink-soft); }
+
+/* Grid tiles (etnicita, rotace, body comp) */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+.tile:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.tile .label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.tile .value {
+  font-family: "Fraunces", serif;
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.tile .note { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+.tile .note b { color: var(--accent); }
+
+/* Body comp tiles: extra emphasis */
+.bodycomp .tile { background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%); }
+
+/* Etnicita bars */
+.bars { display: grid; gap: 10px; margin: 18px 0; }
+.bar-row { display: grid; grid-template-columns: 60px 1fr 200px; gap: 14px; align-items: center; font-size: 14.5px; }
+.bar-row .pct { font-family: "Fraunces", serif; font-size: 17px; font-weight: 600; color: var(--accent); text-align: right; }
+.bar-row .track { background: var(--line-soft); height: 10px; border-radius: 999px; overflow: hidden; }
+.bar-row .fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--sage)); border-radius: 999px; }
+.bar-row .name { color: var(--ink-soft); font-weight: 500; }
+
+/* Three-column cols (foods) */
+.cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 18px 0; }
+.col {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 22px 18px;
+  box-shadow: var(--shadow-sm);
+}
+.col h3 {
+  margin-top: 0;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.col-eat h3 { color: var(--accent); }
+.col-neutral h3 { color: var(--muted); }
+.col-avoid h3 { color: var(--warn); }
+.col ul { padding-left: 18px; margin: 14px 0 0; }
+.col li { margin-bottom: 5px; font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+
+/* Shopping list */
+.shopping {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+  box-shadow: var(--shadow-sm);
+}
+.shopping h3 {
+  margin-top: 22px;
+  color: var(--accent);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.shopping h3:first-child { margin-top: 0; }
+.shopping ul { padding-left: 18px; margin: 12px 0 0; }
+.shopping li { margin-bottom: 4px; font-size: 14.5px; color: var(--ink-soft); }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line-soft); }
+tr:last-child td { border-bottom: none; }
+th {
+  background: var(--bg-soft);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+td { color: var(--ink-soft); vertical-align: top; }
+td b { color: var(--accent); }
+tbody tr:hover { background: var(--surface-2); }
+
+/* Details */
+details {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 18px 0;
+  box-shadow: var(--shadow-sm);
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 14.5px;
+  list-style: none;
+  display: flex; align-items: center; gap: 10px;
+}
+summary::before {
+  content: "+";
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+details[open] summary::before { transform: rotate(45deg); }
+details > table { margin-top: 18px; }
+
+/* Callouts */
+.callout {
+  background: var(--surface-2);
+  border-left: 3px solid var(--sage);
+  padding: 16px 20px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 14px 0;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.callout b { color: var(--accent); }
+.callout.warn { border-left-color: var(--terra); background: var(--terra-soft); }
+.callout.warn b { color: var(--warn); }
+
+/* Section header subtle line */
+section { scroll-margin-top: 24px; }
+
+/* Goals — special card with progress bar */
+.goals { display: grid; gap: 14px; margin-top: 18px; }
+.goal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+}
+.goal .gnum {
+  width: 36px; height: 36px;
+  background: var(--terra);
+  color: white;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+.goal .gbody b { display: block; font-size: 16px; color: var(--ink); margin-bottom: 4px; font-weight: 600; }
+.goal .gbody .arrow { color: var(--terra); font-weight: 600; }
+.goal .gbody p { font-size: 14px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.55; }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .cols, .cols-2 { grid-template-columns: 1fr; }
+  .wrap { padding: 32px 18px 80px; }
+  h2 { margin-top: 64px; }
+  .template { padding: 22px 20px; }
+  .template .row { grid-template-columns: 100px 1fr; gap: 14px; }
+  .bar-row { grid-template-columns: 50px 70px 1fr; }
+  .rule, .goal { padding: 18px 20px; grid-template-columns: 36px 1fr; gap: 14px; }
+  .rule .num, .goal .gnum { width: 32px; height: 32px; font-size: 14px; }
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  h2 { page-break-after: avoid; margin-top: 32px; }
+  .rule, .goal, .tile, .col, .shopping, .template, details, table { box-shadow: none; break-inside: avoid; }
+  details[open] summary ~ * { display: block; }
+  .hero h1 { color: var(--ink); -webkit-text-fill-color: var(--ink); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section class="hero">
+  <div class="kicker">Pro Michala · 2026-05-19</div>
+  <h1>DNA · Protizánětlivý OMAD</h1>
+  <p class="sub">Jedna šablona. Jedno jídlo denně. Bílkoviny rotují přes týden. Postavené na MyHeritage DNA, krevní skupině O a středoevropském původu.</p>
+  <div class="meta">
+    <span class="chip">188 cm · 32 let</span>
+    <span class="chip">Krevní skupina O</span>
+    <span class="chip">86 % středo- a severoevropský původ</span>
+    <span class="chip">APOE ε3/ε3 · PEMT TT · FADS1 nízká konverze</span>
+  </div>
+</section>
+
+<section id="etnicita">
+  <h2 data-num="01">Etnicita</h2>
+  <p>Co tvoji předky po staletí selektovalo a co tomu dluží tvoje tělo dnes.</p>
+  <div class="bars">
+    <div class="bar-row"><span class="name">Východoevropský</span><div class="track"><div class="fill" style="width: 57%;"></div></div><span class="pct">57,0 %</span></div>
+    <div class="bar-row"><span class="name">Německý</span><div class="track"><div class="fill" style="width: 29.4%;"></div></div><span class="pct">29,4 %</span></div>
+    <div class="bar-row"><span class="name">Balkán</span><div class="track"><div class="fill" style="width: 7.8%;"></div></div><span class="pct">7,8 %</span></div>
+    <div class="bar-row"><span class="name">Baltický</span><div class="track"><div class="fill" style="width: 3.4%;"></div></div><span class="pct">3,4 %</span></div>
+    <div class="bar-row"><span class="name">Severoitalský</span><div class="track"><div class="fill" style="width: 2.4%;"></div></div><span class="pct">2,4 %</span></div>
+  </div>
+  <div class="callout"><b>Důsledky pro stravu:</b> středo- a severoevropský klastr byl po staletí selektován na <b>zvěřinu, pastvinami krmené přežvýkavce, kořenovou zeleninu, kvašené zelí, studenovodní ryby, lesní bobule, ořechy a houby</b>. Slovansko-germánský stůl bez pšenice. Světlá kůže (SLC24A5 AA + OCA2 GG) = nízká syntéza vitaminu D při 50°N → nutná suplementace. Laktázová perzistence pravděpodobná, potvrzená MCM6 het.</div>
+</section>
+
+<section id="pravidla">
+  <h2 data-num="02">6 pravidel</h2>
+  <p>Pět minut čtení, šestnáct let zdraví. Drž tohle a vše ostatní je detail.</p>
+  <div class="rules">
+    <div class="rule"><div class="num">1</div><div class="body"><b>Omega-3 EPA+DHA každý den</b><span>FADS1 nepřevádí ALA na EPA. Hlavní zdroj = rybí olej v doplňcích (2–3 g denně). Tučná ryba 1–2× týdně jako bonus, ne povinnost.</span></div></div>
+    <div class="rule"><div class="num">2</div><div class="body"><b>Vejce 3+ denně a játra 1× týdně</b><span>PEMT TT nevyrobí dost cholinu. Žloutek a hovězí játra jsou nepostradatelné.</span></div></div>
+    <div class="rule"><div class="num">3</div><div class="body"><b>Hořké listy + brokolicové klíčky denně</b><span>GSTP1 sníženo — sulforafan z brokolice a klíčků nakopává glutathion a Nrf2 dráhu. TAS2R38 non-taster = chutná ti to.</span></div></div>
+    <div class="rule"><div class="num">4</div><div class="body"><b>Žádná pšenice, kukuřice, brambory, semínkové oleje</b><span>Krevní skupina O + zánětlivá omega-6 dráha. Tohle je hlavní protizánětlivá změna.</span></div></div>
+    <div class="rule"><div class="num">5</div><div class="body"><b>Vitamin D3 + K2 celoročně</b><span>CYP2R1 GG + GC nízká vazba + 50°N šířka. Bez něj systémový zánět nesrazíš.</span></div></div>
+    <div class="rule"><div class="num">6</div><div class="body"><b>Kostní vývar + fermenty + kurkuma denně</b><span>Glycin, probiotika, kurkumin = trojnožka pro tlumení NF-κB.</span></div></div>
+  </div>
+</section>
+
+<section id="sablona">
+  <h2 data-num="03">Denní šablona</h2>
+  <p>Jedno OMAD okno, dvě poloviny dne. Tělo se za 10 dní přizpůsobí.</p>
+  <div class="template">
+    <h3>Jeden den, opakuj do nekonečna</h3>
+    <div class="row">
+      <div class="when">Ráno<br>nalačno</div>
+      <div class="what"><strong>Černá káva</strong> (2 šálky do poledne — CYP1A2 rapid) + <strong>250 ml kostního vývaru</strong> s lžící ghí, špetkou mořské soli a kurkumou s pepřem. <em>Volitelně</em> 2 čtverečky 85% čokolády. Nic víc.</div>
+    </div>
+    <div class="row">
+      <div class="when">12–14 h<br>volitelné</div>
+      <div class="what">Pokud žaludek řve: 1 jablko + hrst vlašských ořechů, nebo zelený čaj. Jinak vynechej.</div>
+    </div>
+    <div class="row">
+      <div class="when">15–18 h<br>OMAD</div>
+      <div class="what">
+        <strong>Talíř 1 · bílkovina dne</strong> — 250 g podle rotace níže<br>
+        <strong>Talíř 2 · tmavá zelenina</strong> — 300 g (kadeřávek, špenát, brokolice, růžičková kapusta) restované na ghí s česnekem<br>
+        <strong>Talíř 3 · syrový boost</strong> — hrst brokolicových klíčků + 2 lžíce kysaného zelí + 1 lžíce extra panenského olivového oleje<br>
+        <strong>Dezert</strong> — 100 g bobulí + 3 čtverečky 85% čokolády
+      </div>
+    </div>
+  </div>
+  <div class="callout">Cíl makroživin: <b>150–180 g bílkoviny</b>, &lt;50 g sacharidů (jen ze zeleniny a bobulí), zbytek tuky. Žádné odměřování — talíř 1 ať je dostatečně velký, talíř 2 dvojnásobně.</div>
+</section>
+
+<section id="rotace">
+  <h2 data-num="04">Rotace bílkoviny</h2>
+  <p>Sedmidenní karuzela. Cholin, retinol, B12, železo i zinek se sami srovnají.</p>
+  <div class="tiles">
+    <div class="tile"><div class="label">Pondělí</div><div class="value">Hovězí steak</div><div class="note">250 g (svíčková / flank), pánev 3 min/strana, olivový olej a sůl</div></div>
+    <div class="tile"><div class="label">Úterý</div><div class="value">Jehněčí kotleta</div><div class="note">300 g, gril 4 min/strana, rozmarýn a česnek</div></div>
+    <div class="tile"><div class="label">Středa</div><div class="value">Vejce + sardinky</div><div class="note">6 vajec míchaných na ghí + 1 konzerva sardinek v olivovém oleji</div></div>
+    <div class="tile"><div class="label">Čtvrtek</div><div class="value">Ryba (volitelné)</div><div class="note">Divoký losos / makrela 250 g, 12–15 min na 200 °C s citronem. Jinak druhý steak.</div></div>
+    <div class="tile"><div class="label">Pátek</div><div class="value">Hovězí játra</div><div class="note">150 g, ghí 90 s/strana + 4 vejce + cibule</div></div>
+    <div class="tile"><div class="label">Sobota</div><div class="value">Kuřecí stehna</div><div class="note">400 g (s kůží), pečená 35 min na 200 °C s tymiánem</div></div>
+    <div class="tile"><div class="label">Neděle</div><div class="value">Zvěřina</div><div class="note">Jelení / srnčí 300 g nebo druhý hovězí steak, pomalu pečené s kořením</div></div>
+  </div>
+  <div class="callout">Týden dohromady = <b>3× červené maso + 1× zvěřina + 1× játra + 1× vejce + sardinky + 1 ryba volitelně</b>. EPA/DHA jede přes <b>rybí olej v doplňcích</b> — ryba na talíři je už jen bonus.</div>
+</section>
+
+<section id="krevni-skupina">
+  <h2 data-num="05">Krevní skupina O</h2>
+  <p>Rámec <em>Eat Right 4 Your Type</em> Petera D'Adama. Tvoje DNA se s profilem O překvapivě dobře překrývá — s důrazem na maso, málo obilnin, minimum mléčného. Kde se rozcházejí (syrové zelí), vyhrává fermentovaná forma.</p>
+  <div class="cols">
+    <div class="col col-eat">
+      <h3>Prospěšné</h3>
+      <ul>
+        <li>Hovězí, jehněčí, zvěřina</li>
+        <li>Hovězí játra</li>
+        <li>Losos, makrela, sardinky, sleď, treska</li>
+        <li>Kadeřávek (kale), špenát, řeřicha, mangold</li>
+        <li>Brokolice, růžičková kapusta</li>
+        <li>Švestky, fíky, sušené švestky</li>
+        <li>Olivový a lněný olej</li>
+        <li>Vlašské ořechy, dýňová semínka</li>
+        <li>Ghí, mořské řasy / kelp</li>
+        <li>Kysané zelí (fermentovaná forma)</li>
+        <li>Petržel, kurkuma, kayenský pepř</li>
+      </ul>
+    </div>
+    <div class="col col-neutral">
+      <h3>Neutrální</h3>
+      <ul>
+        <li>Kuře, krůta, kachna</li>
+        <li>Vejce</li>
+        <li>Tuňák, halibut, štika</li>
+        <li>Mrkev, řepa, pastinák, celer</li>
+        <li>Cuketa, dýně, lilek</li>
+        <li>Avokádo, jablka, hrušky</li>
+        <li>Bobule, hroznové víno</li>
+        <li>Rýže (basmati), pohanka v malém</li>
+        <li>Mandle, lískové ořechy</li>
+        <li>Olivy</li>
+        <li>Zralé sýry v malém množství</li>
+      </ul>
+    </div>
+    <div class="col col-avoid">
+      <h3>Vyhnout se</h3>
+      <ul>
+        <li>Pšenice, žito, ječmen, oves</li>
+        <li>Kukuřice ve všech formách</li>
+        <li>Bílé brambory</li>
+        <li>Fazole, čočka (mimo zelenou)</li>
+        <li>Pomeranče, mandarinky, jahody</li>
+        <li>Pasterizované mléko, smetana</li>
+        <li>Čerstvé měkké sýry</li>
+        <li>Arašídy, kešu, pistácie</li>
+        <li>Syrové zelí a květák</li>
+        <li>Vepřové, špek (omezeně)</li>
+        <li>Káva (DNA říká OK — CYP1A2 rapid)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="jist-vyhnout">
+  <h2 data-num="06">Co jíst · čeho se vyhnout</h2>
+  <p>Praktický každodenní filtr. Pokud něco není v levém sloupci, dvakrát si rozmysli.</p>
+  <div class="cols cols-2">
+    <div class="col col-eat">
+      <h3>Jez denně</h3>
+      <ul>
+        <li>Kadeřávek (kale), špenát, rukola, řeřicha, mangold</li>
+        <li>Brokolice, růžičková kapusta, květák</li>
+        <li>Brokolicové klíčky (sulforafan — hlavní priorita)</li>
+        <li>Česnek, cibule, pórek, zázvor</li>
+        <li>Kurkuma + černý pepř (vždy spolu)</li>
+        <li>Extra panenský olivový olej</li>
+        <li>Ghí, kokosový olej, hovězí lůj</li>
+        <li>Kysané zelí, kimchi, kefír</li>
+        <li>Bobule: borůvky, ostružiny, maliny, jahody</li>
+        <li>85% čokoláda, vlašské ořechy, makadamie</li>
+        <li>Kostní vývar (1 šálek denně)</li>
+        <li>Oregano, rozmarýn, tymián, bobkový list</li>
+        <li>Mořská sůl, kvalitní pepř</li>
+      </ul>
+    </div>
+    <div class="col col-avoid">
+      <h3>Vyhni se</h3>
+      <ul>
+        <li>Pšenice, žito, ječmen, kus-kus, špalda</li>
+        <li>Kukuřice ve všech formách (i lupínky, popcorn)</li>
+        <li>Brambory, hranolky, chipsy</li>
+        <li>Slunečnicový, řepkový, sójový, kukuřičný olej</li>
+        <li>Cukr, sirupy, slazené nápoje, džusy</li>
+        <li>Pasterizované mléko, smetana, čerstvé jogurty</li>
+        <li>Měkké sýry (mozzarella, cottage, žervé)</li>
+        <li>Fazole, čočka (mimo zelenou v malém)</li>
+        <li>Pomeranče, mandarinky (Blood Type O)</li>
+        <li>Arašídy a arašídové máslo</li>
+        <li>Průmyslové uzeniny s dusitany</li>
+        <li>Margaríny a rostlinné „máslové" náhražky</li>
+        <li>Alkohol denně (1–2 sklenky vína týdně max)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="nakup">
+  <h2 data-num="07">Týdenní nákup</h2>
+  <p>Jeden člověk, OMAD, sedm dní. BIO kde to jde (PON1 het).</p>
+  <div class="shopping">
+    <h3>Řezník + ryba</h3>
+    <ul>
+      <li>Hovězí steak 500 g (svíčková, flank nebo ribeye)</li>
+      <li>Jehněčí kotleta 300 g</li>
+      <li>Hovězí játra 150 g (čerstvá od řezníka)</li>
+      <li>Zvěřina nebo další steak 300 g</li>
+      <li>Kuřecí stehna s kůží 400 g</li>
+      <li>Divoký losos nebo makrela 250 g <em>(jen pokud bereš čtvrteční ryba-den — jinak vynech, omega-3 řeší doplněk)</em></li>
+      <li>Sardinky v extra panenském olivovém oleji 2 konzervy</li>
+    </ul>
+    <h3>Zelenina + bobule</h3>
+    <ul>
+      <li>Kadeřávek (kale) 2 svazky</li>
+      <li>Špenát 500 g</li>
+      <li>Brokolice 2 ks</li>
+      <li>Růžičková kapusta 500 g</li>
+      <li>Brokolicové klíčky 2 balení (nebo si vypěstuj na okně)</li>
+      <li>Česnek 2 hlavy, cibule 4 ks</li>
+      <li>Zázvor 1 kořen, kurkuma čerstvá nebo prášek</li>
+      <li>Citrony 4 ks</li>
+      <li>Borůvky nebo ostružiny 700 g (čerstvé nebo mražené)</li>
+    </ul>
+    <h3>Spíž</h3>
+    <ul>
+      <li>Vejce 24 ks (chovatel, ideálně z volného výběhu)</li>
+      <li>Kostní vývar 2 l (uvařit z hovězích kostí nebo koupit)</li>
+      <li>Ghí 250 g</li>
+      <li>Extra panenský olivový olej 500 ml</li>
+      <li>Kokosový olej 250 g</li>
+      <li>Kysané zelí 500 g (nepasterizované)</li>
+      <li>Kimchi 1 sklenice</li>
+      <li>85% čokoláda 1 tabulka</li>
+      <li>Vlašské ořechy 200 g</li>
+      <li>Káva, sypaný zelený čaj</li>
+      <li>Mořská sůl, černý pepř, kurkuma, oregano, rozmarýn, tymián, bobkový list</li>
+    </ul>
+  </div>
+</section>
+
+<section id="suplementy">
+  <h2 data-num="08">Suplementy</h2>
+  <p>Spojení tvého Movement IQ stacku s DNA-specifickými potřebami. Hvězdička ★ = priorita podle DNA.</p>
+
+  <h3>Ráno · nalačno</h3>
+  <table>
+    <tr><th>Co</th><th>Dávka</th><th>Proč</th></tr>
+    <tr><td>Vitamin D3 + K2 MK7 ★</td><td>5000 IU + 100 µg</td><td>CYP2R1 GG, GC nízká vazba, 50°N, světlá kůže</td></tr>
+    <tr><td>Omega-3 EPA + DHA ★</td><td>2–3 g denně</td><td>FADS1 nízká konverze — <b>hlavní zdroj EPA/DHA</b>. TG forma, IFOS testovaný</td></tr>
+    <tr><td>Kreatin monohydrát</td><td>5 g</td><td>ATP pro mozek a svaly</td></tr>
+    <tr><td>Methylovaný B-komplex ★</td><td>1 dávka</td><td>MTHFR 1298 het + MTRR GG — methyl-folát + methyl-B12</td></tr>
+    <tr><td>Hořčík L-threonát</td><td>1 g</td><td>Mozkový hořčík → NMDA / LTP</td></tr>
+    <tr><td>Alpha-GPC / Citicoline</td><td>300–600 / 250–500 mg</td><td>Acetylcholin pro motorické učení. PEMT TT ★</td></tr>
+    <tr><td>ALCAR</td><td>500–1000 mg</td><td>Mitochondriální přenašeč mastných kyselin</td></tr>
+    <tr><td>NAC ★</td><td>600–1200 mg</td><td>GSTP1 sníženo — prekurzor glutathionu</td></tr>
+    <tr><td>Sulforafan ★</td><td>10 mg / hrst klíčků</td><td>GSTP1 sníženo — Nrf2 aktivace</td></tr>
+  </table>
+
+  <h3>Před tréninkem (45 min)</h3>
+  <table>
+    <tr><th>Co</th><th>Dávka</th><th>Proč</th></tr>
+    <tr><td>Hydrolyzovaný kolagen + vitamin C</td><td>15–20 g + 500 mg</td><td>Okno pro syntézu kolagenu (šlachy, vazy, fascie)</td></tr>
+  </table>
+
+  <h3>S jídlem (OMAD)</h3>
+  <table>
+    <tr><th>Co</th><th>Dávka</th><th>Proč</th></tr>
+    <tr><td>Kurkuma + černý pepř ★</td><td>1 g kurkuminu + špetka pepře</td><td>Tlumí NF-κB — hlavní zánětlivý spínač</td></tr>
+    <tr><td>Lion's Mane (dvojitý extrakt)</td><td>500–1000 mg</td><td>Zvyšuje NGF a BDNF</td></tr>
+    <tr><td>Taurin</td><td>3 g</td><td>Modulace GABA, podpora dlouhověkosti</td></tr>
+    <tr><td>MSM</td><td>2–4 g</td><td>Síra pro vazby v kolagenu</td></tr>
+  </table>
+
+  <h3>Před spaním</h3>
+  <table>
+    <tr><th>Co</th><th>Dávka</th><th>Proč</th></tr>
+    <tr><td>Hořčík glycinát ★</td><td>400–600 mg</td><td>Spánek a uvolnění svalů, glycin tlumí zánět</td></tr>
+    <tr><td>Glycin</td><td>3–5 g</td><td>Aminokyselina pro kolagen + uklidňuje</td></tr>
+    <tr><td>Apigenin</td><td>50 mg</td><td>Heřmánková sloučenina, podpora GABA</td></tr>
+    <tr><td>L-theanin</td><td>200–400 mg</td><td>Klidné soustředění (když mozek závodí)</td></tr>
+    <tr><td>Melatonin (nízká dávka)</td><td><b>300 µg</b> (ne 3 mg)</td><td>Nasměrování rytmu, ne přebití</td></tr>
+  </table>
+
+  <h3>Cyklicky / situačně</h3>
+  <table>
+    <tr><th>Co</th><th>Dávka</th><th>Kdy</th></tr>
+    <tr><td>Metylenová modř ⚠️</td><td>1–10 mg lékárenská kvalita</td><td>Mitochondriální přenos elektronů — POZOR na interakce s MAOI a SSRI</td></tr>
+    <tr><td>Berberin</td><td>500 mg k sacharidovému jídlu</td><td>TCF7L2 + FTO nosič — citlivost na inzulín</td></tr>
+    <tr><td>Kvercetin + bromelain</td><td>500 mg + 500 mg</td><td>Akutní zánět, alergie</td></tr>
+    <tr><td>Test feritinu</td><td>1× ročně</td><td>HFE S65C het + vysoký příjem masa ★</td></tr>
+  </table>
+
+  <div class="callout"><b>Pravidlo zavádění:</b> nikdy nepřidávej osm doplňků najednou. Jedna položka, drž ji 4–6 týdnů, pozoruj. Co opravdu funguje, zůstává. Co nic nedělá, vyhoď.</div>
+  <div class="callout"><b>Priorita podle DNA (kdybys měl jen pět):</b> D3+K2, omega-3, hořčík glycinát, methylovaný B-komplex, NAC nebo sulforafan. Tohle pokrývá tvoje hlavní genetická úzká místa.</div>
+</section>
+
+<section id="kompozice">
+  <h2 data-num="09">Tělesná kompozice</h2>
+  <p>Výchozí bod · Tanita RD-545, 2026-05-19, 188 cm, 32 let.</p>
+  <div class="tiles bodycomp">
+    <div class="tile"><div class="label">Hmotnost</div><div class="value">99,25 kg</div><div class="note">BMI 28,1 → <b>nadváha</b></div></div>
+    <div class="tile"><div class="label">Tělesný tuk</div><div class="value">22,8 %</div><div class="note">≈ 22,6 kg → cíl 15–18 %</div></div>
+    <div class="tile"><div class="label">Svalová hmota</div><div class="value">72,8 kg</div><div class="note"><b>Výborná základna</b>, udržet</div></div>
+    <div class="tile"><div class="label">Viscerální tuk</div><div class="value">7,5</div><div class="note">cíl pod 5 (zánětlivý driver)</div></div>
+    <div class="tile"><div class="label">Kvalita svalů</div><div class="value">78 mq</div><div class="note">Atletická hodnota</div></div>
+    <div class="tile"><div class="label">Tělesná voda</div><div class="value">53,8 %</div><div class="note">cíl nad 57 %</div></div>
+    <div class="tile"><div class="label">BMR</div><div class="value">2 276 kcal</div><div class="note">Klidová spotřeba</div></div>
+    <div class="tile"><div class="label">Metabolický věk</div><div class="value">36 let</div><div class="note">chronologicky 32 → <b>4 roky nad</b></div></div>
+    <div class="tile"><div class="label">Klidový tep</div><div class="value">75 bpm</div><div class="note">Normální klidové pásmo</div></div>
+  </div>
+  <div class="callout"><b>Co data říkají:</b> svaly a kvalita svalů jsou silné, problém je <b>tuk + zánět</b>. Metabolický věk +4 roky a viscerální tuk 7,5 ukazují stejným směrem — chronický nízkostupňový zánět. OMAD + protizánětlivé jídlo + omega-3 + D3 řeší přesně tohle. Svalovou hmotu drží 150–180 g bílkoviny denně, takže nehrozí ztráta při kalorickém deficitu.</div>
+</section>
+
+<section id="cile">
+  <h2 data-num="10">Cíle (6 měsíců)</h2>
+  <p>Pět měřitelných ukazatelů. Kontrola měsíčně, krevní panel kvartálně.</p>
+  <div class="goals">
+    <div class="goal"><div class="gnum">1</div><div class="gbody"><b>Tělesný tuk <span class="arrow">22,8 % → 17 %</span></b><p>Při zachované svalovce = úbytek ≈ 6 kg tuku. Tempo 1 kg / měsíc je udržitelné a nezruinuje svaly. Páka: OMAD + protein-first talíř + 2× týdně silový trénink.</p></div></div>
+    <div class="goal"><div class="gnum">2</div><div class="gbody"><b>Viscerální tuk <span class="arrow">7,5 → pod 5</span></b><p>Hlavní driver metabolického věku a zánětu. Klesá s odstraněním pšenice, kukuřice, semínkových olejů a rafinovaných sacharidů. Berberin k případnému sacharidovému jídlu.</p></div></div>
+    <div class="goal"><div class="gnum">3</div><div class="gbody"><b>Metabolický věk <span class="arrow">36 → pod 32</span></b><p>Funkce úbytku tuku, růstu tělesné vody a zachované svalovky dohromady. Měřit 1× měsíčně, stejná denní doba, nalačno, před tréninkem (ne po něm — zkresluje to).</p></div></div>
+    <div class="goal"><div class="gnum">4</div><div class="gbody"><b>Svalová hmota <span class="arrow">72,8 kg → 73+ kg</span></b><p>Žádný úbytek navzdory deficitu — to je test, že OMAD funguje. Klíč: 150–180 g bílkoviny + kreatin 5 g denně + 2× týdně compound lifts (dřep, tah, tlak, shyb).</p></div></div>
+    <div class="goal"><div class="gnum">5</div><div class="gbody"><b>Tělesná voda <span class="arrow">53,8 % → 57+ %</span></b><p>Roste automaticky s úbytkem tuku, ale podpoř: 3 l filtrované vody denně, mořská sůl k vývaru, elektrolyty (Mg, K, Na) k tréninku. Suchá strava (rýže, chleba) tělesnou vodu sráží.</p></div></div>
+  </div>
+  <div class="callout"><b>Týdenní pulse-check:</b> hmotnost v pondělí ráno nalačno. <b>Měsíčně:</b> kompletní Tanita měření + obvod pasu (nalačno, před tréninkem). <b>Kvartálně:</b> krevní panel (feritin, CRP, lipidy, HbA1c, vitamin D, B12, homocystein, fT3/fT4) pro objektivní validaci.</div>
+</section>
+
+<section id="dna">
+  <h2 data-num="11">Klíčové DNA nálezy</h2>
+  <details>
+    <summary>Rozbalit · proč tahle dieta</summary>
+    <table>
+      <tr><th>Gen</th><th>Genotyp</th><th>Co to znamená</th></tr>
+      <tr><td>APOE</td><td>ε3/ε3</td><td>Nasycené tuky v pořádku, žádné omezení</td></tr>
+      <tr><td>PEMT</td><td>TT</td><td>Vyžaduje cholin — vejce + játra</td></tr>
+      <tr><td>FADS1</td><td>GG / TT</td><td>EPA/DHA jen z ryb nebo doplňků</td></tr>
+      <tr><td>CYP2R1 + GC</td><td>GG / nízká vazba</td><td>Vitamin D3 celoročně</td></tr>
+      <tr><td>TAS2R38</td><td>non-taster</td><td>Hořké zelené chutnají — jez je</td></tr>
+      <tr><td>GSTP1</td><td>AA snížené</td><td>Sulforafan a NAC pro glutathion</td></tr>
+      <tr><td>CYP1A2</td><td>AA rapid</td><td>2–3 kávy do oběda v pořádku</td></tr>
+      <tr><td>TCF7L2 + FTO</td><td>het + het</td><td>Bílkovina napřed, žádné rafinované sacharidy</td></tr>
+      <tr><td>MCM6</td><td>GA het</td><td>Ghí a fermentované mléčné v pořádku, čerstvé mléko ne</td></tr>
+      <tr><td>HFE S65C</td><td>AT het</td><td>1× ročně feritin kvůli masité stravě</td></tr>
+      <tr><td>ALDH2</td><td>GG wild-type</td><td>Metabolismus alkoholu normální (ale alkohol stále zánětlivý)</td></tr>
+      <tr><td>BCMO1</td><td>TA het</td><td>Preformovaný retinol z jater a žloutku</td></tr>
+    </table>
+  </details>
+</section>
+
+<section id="tipy">
+  <h2 data-num="12">Tipy na zjednodušení</h2>
+  <div class="callout"><b>Nedělních 30 minut</b> = uvařit 2 l kostního vývaru a zamrazit v 250ml dávkách. Nakrájet veškerou zeleninu na týden. Pak každé jídlo trvá 15 minut.</div>
+  <div class="callout"><b>OMAD pravidlo</b> = první jídlo dej minimálně 4 hodiny po první kávě. Okno cca 13–18 h. Žaludek napřed protestuje, do 10 dnů to přejde.</div>
+  <div class="callout"><b>Bonusový den s rybou</b> = 2 konzervy sardinek z olivového oleje. Cena 100 Kč, kompletní protein, vápník z kostí. Omega-3 už máš z doplňku, takže ryba je luxus, ne povinnost.</div>
+  <div class="callout"><b>Když máš zánět nebo nemoc</b> = den jen kostní vývar + ghí + kurkuma. 24h fasting + glycin srazí systémový zánět rychleji než cokoliv jiného.</div>
+  <div class="callout"><b>Jídlo mimo domov</b> = grilované maso nebo ryba + zelenina, bez chleba, bez hranolek, bez tortilly. Argentinský gril, kebab, vietnamské pho, poke nebo sashimi, indický tandoori — všechno v pořádku.</div>
+</section>
+
+</div>
+</body>
+</html>
